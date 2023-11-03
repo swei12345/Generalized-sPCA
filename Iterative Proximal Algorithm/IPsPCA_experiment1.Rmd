@@ -92,49 +92,15 @@ value(mixed_norm(syn.inciMat %*% v0 , 2, 1))
 
 ### Apply the algorithm with arbitarily chosen parameters (which roughly works. Note that a large $\tau$ will cause QR factorizaiton to fail. Convergence are not guanranteed, but the algorithm does drop to a small range of values quickly)
 
-### Caution: Sourcing the algorithms from `IPsPCA.R` may cause Warning on variable length mismatch. But runing the scripts below directly doesn't.
-
-```r
-proximal <- function(T_t, G, tau){
-  p <-  dim(T_t)[1]  ## row size
-  k <-  dim(T_t)[2]  ## col size
-  
-  X <-  Variable(rows = p, cols = k)
-  prob <-  Problem(Minimize(norm(X - T_t, "F") + tau * mixed_norm(G %*% X, 2, 1)))
-  CVXR_result <-  solve(prob, solver = "ECOS")
-  
-  return(CVXR_result$getValue(X))}
-
-
-IPsPCA <- function(S, v, G, tau, max_it = 20){
-  Q <-  v   ### need to check if Q full-column rank
-  T_t <-  S %*% Q
-  t <-  0
-  
-  while (t < max_it){
-      
-    T_t <-  proximal(T_t, G, tau)
-    Q <-  qr.Q(qr(T_t))  
-    T_t <-  S %*% Q
-      
-      
-    t <-  t+ 1
-    }
-    
-    
-    return (list( "Q" = Q))}
-```
-
-
 ```{r}
-IPsPCA_result = IPsPCA(S0, v0,syn.inciMat, tau = 0.05, max_it =10 )  
+IPsPCA_result = IPsPCA(S0, v0,syn.inciMat, tau = 0.05, max_it =10 )   
 ```
 
 We may plot the $U$ estimated by IPsPCA and PCA.The colors represent the ground truth clusters. Note that many points in IPsPCA overlap.
 
 ```{r}
 par(pty = "s")
-plot(IPsPCA_result$Q[,1], IPsPCA_result$Q[,2], col = as.factor(syn.locs$group), main = "IPsPCA")
+plot(IPsPCA_result$Q[,1], IPsPCA_result$Q[,2], col = as.factor(syn.locs$group), main = "IPsPCA") 
 plot(v0[,1], v0[,2], col = as.factor(syn.locs$group), main = "PCA")
 ```
 
@@ -142,7 +108,7 @@ We can then plot the estimated clusters from kmeans clustering on the $U$s:
 
 ```{r}
 IPsPCA_est = data.frame(x = syn.locs$x, y = syn.locs$y, cl = as.factor(kmeans(IPsPCA_result$Q, 3)$cluster))
-PCA_est = data.frame(x = syn.locs$x, y = syn.locs$y, cl = as.factor(kmeans(v0, 3)$cluster))
+PCA_est = data.frame(x = syn.locs$x, y = syn.locs$y, cl = as.factor(kmeans(v0, 3)$cluster)) 
 
 qplot(x, y , data = IPsPCA_est, col = cl, main = "IPsPCA")
 qplot(x, y , data = PCA_est, col = cl, main = "PCA")
@@ -152,7 +118,7 @@ qplot(x, y , data = PCA_est, col = cl, main = "PCA")
 We use ARI to compare estimations and ground truth of clusters (ARI = 1 means perfect; the smaller the worse). The terrible performance is unsuprising since this experiment aims to show a rough analysis pipeline instead of carefully choosing parameters, etc. .
 
 ```{r}
-ARI(IPsPCA_est$cl, as.factor(syn.locs$group))
+ARI(IPsPCA_est$cl, as.factor(syn.locs$group)) 
 ```
 
 ```{r}
