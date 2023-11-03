@@ -4,3 +4,8 @@ We add an additional proximal projection step before the standard orthogonal ite
 ```math
 T_t^{(1)} = \arg\min_X \|X - T_t^{(0)}\|_F^2 + \tau\|\Gamma X\|_{2,1}$
 ```
+### R implementation
+A naive implementation of this Iterative Proximal algorithm for sparse PCA `IPsPCA` is written in R. The proximal step is computed by the `CVXR` R package. 
+Currently, codes for raising exceptions and errors are missing. E.g., need to check if $\tau$ is too large so that $T_t^{(1)}$ is not of full column rank, and QR factorization fails. 
+
+### 
