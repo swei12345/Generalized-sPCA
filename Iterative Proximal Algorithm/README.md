@@ -12,5 +12,12 @@ Currently, codes for raising exceptions and errors are missing. E.g., need to ch
 For deatils, see the Rmarkdown file `NAME` (R version 4.3.2) 
 Suppose we have a spatial genetic data matrix $X$ of size $n \times p$ and we want to estimate its k leading left eigenvectors $U_k$, which are aligned with respect to a graph $\Gamma$. We can apply `IPsPCA` on $S = X X^T/n$. 
 
-In this example, we generate a spatial genetic data matrix from [SRTsim](https://jiaqiangzhu.shinyapps.io/srtsim/)
+In this example, we generate a spatial genetic data matrix from [SRTsim](https://jiaqiangzhu.shinyapps.io/srtsim/) with locations of genes randomly spaced over a 2D grid. We can visualize the clusters as:
+<p align="center">
+<img src="https://github.com/swei12345/Generalized-sPCA/assets/114754235/3fae59d3-5119-4682-85cf-8785eb4db02c" width="350" height="300">
+</p>
+
+
+Based on the coordinates, we can form a k-NN graph: 
+<img src="https://github.com/swei12345/Generalized-sPCA/assets/114754235/cda52700-83cd-4297-9a09-5c2a3f3981af" width="250" height="250">
 
