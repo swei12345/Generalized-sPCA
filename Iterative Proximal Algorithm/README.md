@@ -23,8 +23,10 @@ Based on the coordinates, we can form a k-NN graph. In the next step, we use the
 <img src="https://github.com/swei12345/Generalized-sPCA/assets/114754235/cda52700-83cd-4297-9a09-5c2a3f3981af" width="250" height="250"> 
 </p>
 
-After we extract the structured $U$, we can apply kmeans clustering on each of its $n$ rows, which are vectors of size $k$. (That is, we treat the k-vectors as features for $n$ locations. This practice is not very meaningful. This is just to provide an example to show what we may do for the downstream analysis). The estimated clusters are shown on the left from the structured $U$, clustering results from standard $U$ without imposed structure from PCA are shown on the right. 
+After we extract the structured $U$, we can apply kmeans clustering on each of its $n$ rows, which are vectors of size $k$. (That is, we treat the k-vectors as features for $n$ locations. This practice is not very meaningful. This is just to provide an example to show what we may do for the downstream analysis). The estimated clusters from the structured $U$ are shown on the **left**; clusters from standard PCA are shown on the **right**. 
 
 
+<img src="https://github.com/swei12345/Generalized-sPCA/assets/114754235/e55e7650-2d0f-4cf6-8cb4-2f351d72c257" width="300" height="250" align = "left"> 
+<img src="https://github.com/swei12345/Generalized-sPCA/assets/114754235/9b7121cf-1f41-41a4-ac3f-b7f3d86b5aa5" width="300" height="250" align = "right"> 
 
-Again, since the parameters, prepocessings, and the clusterings techniques are arbitrarily chosen, the numerical results are not that meaningful or interpretable, and its only purpose is to show a possible pipeline of analysis. 
+Again, since the parameters, prepocessings, and the clustering techniques are arbitrarily chosen, the numerical results are not that meaningful or interpretable, and its only purpose is to show a possible pipeline of analysis. 
