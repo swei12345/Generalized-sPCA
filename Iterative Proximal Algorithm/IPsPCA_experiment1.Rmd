@@ -69,14 +69,14 @@ syn.inciMat = t(as.matrix(asNetwork(graph_from_edgelist(syn.e, directed = TRUE))
 ```
 
 
-Initialize by PCA (SVD). Here we set the number of components $k = 2$.
+Initialize by PCA (SVD). Here we set the number of components $k = 2$. We have $n = 980$ locations, and $p = 101$ genes. 
 
 ```{r}
 X0 = data.matrix(syn.counts)
 X0 = scale(X0)  ### Naive normalization 
 
 n = dim(X0)[1]
-p = dim(X0)[2]
+p = dim(X0)[2] ### Here, n, p are swapped (n = 101, p = 980)
 
 S0 = t(X0) %*% X0 / n
 
