@@ -17,17 +17,16 @@ IPsPCA <- function(S, v, G, tau, max_it = 20){
   ### G: incidence matrix of given graph
   ### tau: regularization parameter
   Q = v   
-  T_t = S %*% Q
+  
   t = 0
   
   while (t < max_it){
-      
+    T_t = S %*% Q  
     T_t = proximal(T_t, G, tau)
     Q = qr.Q(qr(T_t))  
-    T_t = S %*% Q
     
     t = t+ 1}
     
-    Pi = Q %*% t(Q)
+    
     return (list("Q" = Q))  
   }
