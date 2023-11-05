@@ -9,4 +9,4 @@ Ta_t = t(X) %*% Qb ### space over p (V)
 Ta_t = proximal(Ta_t, G, tau)  ### incorporate structures over p
 Qa = qr.Q(qr(Ta_t))
 ```
-Eventually we obtain `Qb` as the estimate for $U$ and `Qa` for $V$ in $X_k = U\Sigma_kV^T$. At convergence, we should expect that $Qb^T X Qa$ is a diagonal matrix approximating $\Sigma_k$. As a metric for such convergence, we check the norm of all off-diagonal entries of $Qb_t^T X Qa_t$ at each iteration.
+Eventually we obtain `Qb` as the estimate for $U$ and `Qa` for $V$ in $X_k = U\Sigma_kV^T$. At convergence, we should expect that $Qb^T X Qa$ is a diagonal matrix approximating $\Sigma_k$. As a metric for such convergence, we check the norm of all off-diagonal entries of $Qb_t^T X Qa_t$ at each iteration. The below plot shows the norm for `tau = 0.25` as iterations $t$ increase.
