@@ -1,1 +1,1 @@
-# Generalized-sPCA
+# Bi-Iterative Proximal Algorithm
