@@ -1,5 +1,5 @@
 ### Bi-Iterative Proximal Algorithm
-Similar to the orthogonal iteration method, the classical Bi-iterative method extract both the left and the right leading eigenspace through QR factorization. Based on this idea, we can incorporate structures on both $n$ and $p$ dimensions by adding proximal projection steps. That is, compared to the `IPsPCA` method, we instead have the following in each iteration (t):
+Similar to the orthogonal iteration method, the classical Bi-iterative method extract both the left and the right leading eigenspace through QR factorization. Based on this idea, we can incorporate structures on both $n$ and $p$ dimensions by adding proximal projection steps. That is, compared to the `IPsPCA` method, we instead have the followings in each iteration (t):
 ```r
 Tb_t = X %*% Qa  ### space over n (U)
 ### We can incorporate possible structures over n here ####
