@@ -1,0 +1,97 @@
+---
+title: "IPsPCA"
+output: pdf_document
+date: "2023-11-03"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Similar to the settings for `IPsPCA_experiment1.Rmd`
+
+```{r}
+# Packages for graph objects
+library(spdep)
+library(igraph)
+
+### Packages to extract incidence matrix from a general graph
+library(intergraph)
+library(network)
+
+# Computations
+library(CVXR)
+
+# plot
+library(ggplot2)
+
+# ARI; compare estimated clusters with ground truth
+library(aricode)
+
+
+# Import methods
+source("BiIPsPCA.R")
+
+
+```
+
+
+Import data:
+```{r}
+syn.locs <- read.csv("Square_sps_location_seed1.csv", header = TRUE, row.names = 1)  ##2D coordinates
+syn.counts <- read.csv("Square_sps_count_seed1.csv", header = TRUE, row.names = 1)  ##Poisson counts 
+```
+
+Construct 1-NN graph (spdep object) from the locations:
+```{r}
+syn.coords <-  cbind(syn.locs$x, syn.locs$y)
+syn.1nn <- knearneigh(syn.coords, k = 1)
+```
+
+From spdep neighborhood object to igraph graph object (Redundancy):
+```{r}
+syn.nb <- knn2nb(syn.1nn)
+syn.g = graph_from_adj_list(syn.nb)  
+syn.e = as_edgelist(syn.g) 
+syn.g = graph_from_edgelist(syn.e, directed = FALSE) 
+##Here,one edge can be weighted twice if node i and j are mutual closest k-neighbors.
+##Due to formatting issues, we did graph from adj_list, then edgelist from graph, eventually graph from edgelist (Redundancy)
+```
+
+Visualize the 1-NN graph (igraph object):
+```{r}
+plot(syn.g, layout = syn.coords,vertex.size = 2, vertex.label = NA) ## we set directed = False for plotting purpose
+```
+
+```{r}
+syn.inciMat = t(as.matrix(asNetwork(graph_from_edgelist(syn.e, directed = TRUE)),matrix.type="incidence"))
+```
+
+
+Initialize by PCA (SVD). Here we set the number of components $k = 2$.
+
+```{r}
+X0 = data.matrix(syn.counts)
+X0 = scale(X0)  ### Naive normalization 
+n = dim(X0)[1]
+p = dim(X0)[2]
+
+S0 = t(X0) %*% X0 /(n-1)  ### May use n - 1 since we center the X
+
+k = 2 ## user-chosen dimension
+X0_k = svd(X0)
+v0 = X0_k$v[,1:k]   ## base function: svd. This seems to be slower than NumPy
+u0 = X0_k$u[, 1:k]
+```
+
+#Now, we check the convergence by measuring the norm of off diagonal elements (take the squre root of sum of squares of all off-diagonal entries)
+
+```{r}
+BiIPsPCA_result = BiIPsPCA(X0, v0,syn.inciMat, tau = 0.25, max_it =50 )   
+```
+
+
+```{r}
+plot(log(BiIPsPCA_result$off_diags), xlab = "iteration t", ylab = expression(log(norm(Sigma^"off"))))
+```
+
